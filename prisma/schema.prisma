@@ -26,10 +26,22 @@ model Asset {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
 
-  name               String              @db.VarChar(255) // Equipment ID (e.g., "Turbine-TR-505")
-  belongsToId        String // Fixed typo from belongsToid
+  name               String    @db.VarChar(255) // Equipment ID (e.g., "Turbine-TR-505")
+  description        String?   @db.Text
+  type               String?   @db.VarChar(100)
+  serialNumber       String?   @db.VarChar(100)
+  location           String?   @db.VarChar(255)
+  manufacturer       String?   @db.VarChar(100)
+  model              String?   @db.VarChar(100)
+  purchaseDate       DateTime?
+  warrantyExpiration DateTime?
+  status             String?   @db.VarChar(50)
+  assignedTo         String?   @db.VarChar(100)
+  value              Float?
+
+  belongsToId        String
   belongsTo          User                @relation(fields: [belongsToId], references: [id])
-  maintenanceRecords MaintenanceRecord[] // Service history for this asset
+  maintenanceRecords MaintenanceRecord[]
 
   @@unique([id, belongsToId])
 }

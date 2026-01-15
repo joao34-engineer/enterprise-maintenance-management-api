@@ -10,8 +10,12 @@ const swaggerDefinition = {
   },
   servers: [
     {
+      url: '/',
+      description: 'Root for login/register',
+    },
+    {
       url: '/api',
-      description: 'Default API base path',
+      description: 'API base path for protected routes',
     },
   ],
   components: {
@@ -27,8 +31,19 @@ const swaggerDefinition = {
         type: 'object',
         properties: {
           id: { type: 'string', format: 'uuid' },
-          name: { type: 'string' },
-          belongsToId: { type: 'string', format: 'uuid' },
+          name: { type: 'string', description: 'Asset name' },
+          description: { type: 'string', description: 'Detailed description of the asset' },
+          type: { type: 'string', description: 'Type of asset (e.g., machine, vehicle, building)' },
+          serialNumber: { type: 'string', description: 'Serial number or asset tag' },
+          location: { type: 'string', description: 'Physical location of the asset' },
+          manufacturer: { type: 'string', description: 'Manufacturer of the asset' },
+          model: { type: 'string', description: 'Model of the asset' },
+          purchaseDate: { type: 'string', format: 'date', description: 'Date of purchase' },
+          warrantyExpiration: { type: 'string', format: 'date', description: 'Warranty expiration date' },
+          status: { type: 'string', enum: ['active', 'retired', 'under_maintenance'], description: 'Current status of the asset' },
+          assignedTo: { type: 'string', description: 'User or department responsible for the asset' },
+          value: { type: 'number', format: 'float', description: 'Asset value or cost' },
+          belongsToId: { type: 'string', format: 'uuid', description: 'Parent asset or group (if any)' },
           createdAt: { type: 'string', format: 'date-time' },
         },
       },
@@ -36,14 +51,23 @@ const swaggerDefinition = {
         type: 'object',
         properties: {
           id: { type: 'string', format: 'uuid' },
-          title: { type: 'string' },
-          body: { type: 'string' },
+          title: { type: 'string', description: 'Short description of the maintenance task' },
+          body: { type: 'string', description: 'Detailed description or notes' },
+          assetId: { type: 'string', format: 'uuid', description: 'ID of the asset being maintained' },
           status: {
             type: 'string',
             enum: ['SCHEDULED', 'IN_PROGRESS', 'COMPLETED', 'EMERGENCY_REPAIR'],
+            description: 'Status of the maintenance task'
           },
-          version: { type: 'string', nullable: true },
-          assetId: { type: 'string', format: 'uuid' },
+          version: { type: 'string', nullable: true, description: 'Version or revision of the record' },
+          scheduledDate: { type: 'string', format: 'date-time', description: 'When the maintenance is planned' },
+          completedDate: { type: 'string', format: 'date-time', description: 'When the maintenance was completed' },
+          priority: { type: 'string', enum: ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'], description: 'Priority level' },
+          assignedTo: { type: 'string', description: 'User or team responsible' },
+          cost: { type: 'number', format: 'float', description: 'Estimated or actual cost' },
+          attachments: { type: 'array', items: { type: 'string', format: 'uri' }, description: 'Links to documents or files' },
+          createdBy: { type: 'string', description: 'User who created the record' },
+          updatedBy: { type: 'string', description: 'User who last updated the record' },
           createdAt: { type: 'string', format: 'date-time' },
           updatedAt: { type: 'string', format: 'date-time' },
         },
@@ -63,6 +87,85 @@ const swaggerDefinition = {
   },
   security: [{ bearerAuth: [] }],
   paths: {
+    '/user': {
+      post: {
+        summary: 'Register a new user',
+        tags: ['Auth'],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['username', 'password'],
+                properties: {
+                  username: { type: 'string' },
+                  password: { type: 'string', format: 'password' }
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          200: {
+            description: 'JWT token for the new user',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: { token: { type: 'string' } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    '/signin': {
+      post: {
+        summary: 'Login and get JWT token',
+        tags: ['Auth'],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['username', 'password'],
+                properties: {
+                  username: { type: 'string' },
+                  password: { type: 'string', format: 'password' }
+                }
+              }
+            }
+          }
+        },
+        responses: {
+          200: {
+            description: 'JWT token for the user',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: { token: { type: 'string' } }
+                }
+              }
+            }
+          },
+          401: {
+            description: 'Invalid username or password',
+            content: {
+              'application/json': {
+                schema: {
+                  type: 'object',
+                  properties: { message: { type: 'string' } }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     '/asset': {
       get: {
         summary: 'List assets',
@@ -77,12 +180,10 @@ const swaggerDefinition = {
           content: {
             'application/json': {
               schema: {
-                type: 'object',
-                required: ['name'],
-                properties: { name: { type: 'string' } },
-              },
-            },
-          },
+                $ref: '#/components/schemas/Asset'
+              }
+            }
+          }
         },
         responses: { 200: { description: 'Asset created' } },
       },
@@ -129,18 +230,10 @@ const swaggerDefinition = {
           content: {
             'application/json': {
               schema: {
-                type: 'object',
-                required: ['title', 'body', 'assetId'],
-                properties: {
-                  title: { type: 'string' },
-                  body: { type: 'string' },
-                  assetId: { type: 'string' },
-                  status: { type: 'string' },
-                  version: { type: 'string' },
-                },
-              },
-            },
-          },
+                $ref: '#/components/schemas/MaintenanceRecord'
+              }
+            }
+          }
         },
         responses: { 200: { description: 'Maintenance record created' } },
       },

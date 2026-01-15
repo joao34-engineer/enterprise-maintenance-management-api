@@ -31,8 +31,8 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 
-app.get('/', (req, res, next) => {
-	res.json({message: 'hello world'})
+app.get('/', (req, res) => {
+	res.redirect('/docs');
 })
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
