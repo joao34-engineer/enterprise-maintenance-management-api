@@ -1,0 +1,204 @@
+# Project Setup Guide
+
+## 1. Initialize the Project
+
+```bash
+npm init --
+npm install
+npm i express --save
+```
+
+---
+
+## 2. Install Prisma and TypeScript
+
+Prisma works best with TypeScript. We'll convert our app to TypeScript for better autocomplete and type safety.
+
+```bash
+npm i typescript ts-node @types/node prisma --save-dev
+```
+
+- Create a `tsconfig.json` file with the following content:
+
+```json
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "outDir": "dist",
+    "strict": true,
+    "lib": ["esnext"],
+    "esModuleInterop": true
+  }
+}
+```
+
+---
+
+## 3. Initialize Prisma
+
+```bash
+npx prisma init
+```
+
+- Copy the **External Database URL** into the `.env` file that Prisma creates. If it doesn't create one, create a `.env` file at the root of the project.
+- Add your DB connection string as `DATABASE_URL` in `.env`.
+
+---
+
+## 4. Format Prisma Schema (Optional)
+
+```bash
+npx prisma format
+```
+
+---
+
+## 5. Install Prisma Client and Run Migrations
+
+```bash
+npm i @prisma/client --save
+```
+
+
+````run migration
+
+npx prisma migrate dev --name init
+
+- This will migrate the DB using your schema and generate the Prisma client, which is type-checked against your schema.
+
+---
+
+## 6. Install Useful Development Tools
+
+- **Thunder Client**: VS Code extension to test your API (GET, PUT, POST, DELETE)
+- **Morgan**: HTTP request logger middleware
+
+```bash
+npm i morgan --save
+```
+
+- **CORS**: Enable Cross-Origin Resource Sharing
+
+```bash
+npm i cors --save
+```
+
+- **Nodemon**: Automatically restart the server on changes
+
+```bash
+npm install nodemon --save-dev
+```
+
+- Update `package.json` scripts:
+
+```json
+"dev": "nodemon src/index.ts"
+```
+
+- To start the server manually:
+
+```bash
+ts-node src/index.ts
+```
+
+---
+
+## 7. Implement Authentication
+
+- Install authentication dependencies:
+
+```bash
+npm i jsonwebtoken bcrypt dotenv
+```
+
+- Create a new file: `src/modules/auth` and add:
+
+```typescript
+import jwt from "jsonwebtoken";
+
+export const createJWT = (user) => {
+  const token = jwt.sign(
+    { id: user.id, username: user.username },
+    process.env.JWT_SECRET
+  );
+  return token;
+};
+```
+
+```install a validator 
+
+npm i express-validator --save;
+
+
+```get in the prisma studio
+
+npx prisma studio
+
+
+By using process.on('uncaughtException', (error) => { ... }) 
+
+to catch errors that are 
+thrown but not handled elsewhere
+ in the application
+
+
+TO CONFIGURE DE ENVIRONMENT VARIBLES WE NEED
+TO INSTALL A PACKAGE
+
+```npm i lodash.merge --save
+
+``` to run the project in production mode 
+STAGE=production npm run dev
+
+```Setting up tests
+
+We'll be using jest and supertest to test our API. This ensures our code does what we intended and continues to do so.
+
+npm i supertest @types/supertest jest @types/jest ts-jest
+
+Next, we'll initialize a jest config:
+
+npx ts-jest config:init.
+
+We're now ready to test!
+
+```to deploy the app we nee add this 
+"build": "tsc -p tsconfig.json",
+"start": "node dist/index.js",
+
+  to the "scripts" inside the package.json file 
+
+``` inside ts.config file, we need replace this 
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "strict": false,
+    "lib": ["esnext"],
+    "esModuleInterop": true,
+    "declaration": true,
+    "target": "es6"
+  },
+  "include": ["src/**/*.ts"]
+}
+for what is already there.
+
+```if there is error with morgan try to update or install
+ npm install morgan
+
+ ```after that try to build
+
+ npm run build
+
+ after building try: npm start
+
+ ```gitignore
+ if tis already there, add this folders inside
+ gitignore 
+
+ .env
+/src/generated/prisma
+dist
+

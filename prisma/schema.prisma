@@ -1,0 +1,73 @@
+// GridOps: Industrial Asset Lifecycle Management API
+// Prisma schema for tracking maintenance records of electrical infrastructure
+// Transformed from generic changelog system to asset management domain
+
+generator client {
+  provider = "prisma-client-js"
+  // output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User: Site managers and field engineers
+model User {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  username  String   @unique
+  password  String
+  assets    Asset[] // Industrial equipment owned by this user
+}
+
+// Asset: Physical electrical equipment (generators, transformers, panels)
+model Asset {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+
+  name               String              @db.VarChar(255) // Equipment ID (e.g., "Turbine-TR-505")
+  belongsToId        String // Fixed typo from belongsToid
+  belongsTo          User                @relation(fields: [belongsToId], references: [id])
+  maintenanceRecords MaintenanceRecord[] // Service history for this asset
+
+  @@unique([id, belongsToId])
+}
+
+// Status enum for maintenance workflow
+enum UPDATE_STATUS {
+  SCHEDULED // Service scheduled but not started
+  IN_PROGRESS // Maintenance currently ongoing
+  COMPLETED // Service finished successfully
+  EMERGENCY_REPAIR // Critical failure requiring immediate attention
+}
+
+// MaintenanceRecord: Service events and inspection visits
+model MaintenanceRecord {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt // Fixed typo from updateAt
+
+  title   String // Service Type (e.g., "Annual Safety Inspection")
+  body    String // Technician Notes
+  status  UPDATE_STATUS @default(IN_PROGRESS)
+  version String? // Firmware Version (if applicable)
+  asset   String? // Legacy field for additional asset reference
+
+  assetId        String
+  assetRecord    Asset           @relation(fields: [assetId], references: [id])
+  checklistTasks ChecklistTask[] // Granular tasks completed during service
+}
+
+// ChecklistTask: Granular line-items completed during maintenance
+model ChecklistTask {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt // Fixed typo from updateAt
+
+  name        String @db.VarChar(255) // Task Name (e.g., "Voltage Output Checked")
+  description String // Result (e.g., "Output stable at 240V")
+
+  maintenanceRecordId String
+  maintenanceRecord   MaintenanceRecord @relation(fields: [maintenanceRecordId], references: [id])
+}

@@ -1,0 +1,1587 @@
+# 📋 Software Skeleton Generator - Comprehensive Project Documentation
+
+## 📖 Table of Contents
+1. [Project Overview](#project-overview)
+2. [Architecture & Scope](#architecture--scope)
+3. [Technology Stack](#technology-stack)
+4. [Project Structure](#project-structure)
+5. [Template System](#template-system)
+6. [Implementation Details](#implementation-details)
+7. [Development Workflow](#development-workflow)
+8. [Usage Examples](#usage-examples)
+9. [Deployment Strategy](#deployment-strategy)
+10. [Future Roadmap](#future-roadmap)
+
+---
+
+## 📚 Document Information
+- **Created**: September 2025
+- **Version**: 1.0
+- **Purpose**: Complete technical specification for CLI code generator
+- **Target Audience**: Developers, Project Managers, Technical Lead
+
+---
+
+## 🎯 Project Overview
+
+### Project Identity
+- **Name**: Software Skeleton Generator (CLI)
+- **Type**: Node.js Command Line Interface Tool
+- **Goal**: Rapid development acceleration through automated project scaffolding
+
+### 🚀 Core Concept
+A modular CLI tool that functions as a "software LEGO kit", enabling developers to:
+- Generate complete project structures in seconds
+- Create both backend and frontend scaffolding
+- Compose reusable code modules (CRUD, Authentication, File Upload)
+- Support multiple technology stacks
+- Provide production-ready starting points
+
+### 🎯 Key Objectives
+1. **Speed**: Reduce project setup time from hours to minutes
+2. **Consistency**: Standardized code structure across projects
+3. **Flexibility**: Modular architecture supporting various stacks
+4. **Scalability**: Easy to extend with new templates and modules
+5. **Quality**: Production-ready code with best practices
+
+### 🏆 Value Proposition
+- **For Developers**: Focus on business logic instead of boilerplate
+- **For Teams**: Consistent project structure and coding standards
+- **For Organizations**: Faster time-to-market and reduced development costs
+
+---
+
+## 🏗️ Architecture & Scope
+
+### 📋 System Requirements
+
+#### Core Functionality
+- **Interactive CLI Interface**: Terminal-based user interaction
+- **Project Initialization**: Complete project scaffolding
+- **Entity Generation**: Dynamic model/controller/route creation
+- **Module Composition**: Mix and match functionality modules
+- **Multi-Stack Support**: Different technology combinations
+
+#### Input Specifications
+```bash
+# Example CLI Usage
+skeleton-cli init my-project --backend express --database mongodb
+skeleton-cli generate entity Product name:string price:number description:text
+skeleton-cli add module auth-jwt
+skeleton-cli add module file-upload
+```
+
+### 🔧 System Components
+
+#### 1. CLI Interface Layer
+- **User Input Processing**: Command parsing and validation
+- **Interactive Prompts**: Guided project setup
+- **Command Router**: Direct commands to appropriate handlers
+- **Output Formatting**: User-friendly feedback and progress
+
+#### 2. Template Engine
+- **Template Processing**: EJS-based dynamic code generation
+- **Variable Substitution**: Context-aware template rendering
+- **Conditional Logic**: Feature-based template inclusion
+- **Loop Processing**: Entity iteration and bulk generation
+
+#### 3. Code Generation Engine
+- **File System Operations**: Directory creation and file writing
+- **Template Orchestration**: Multi-file template coordination
+- **Naming Conventions**: Automated case conversion and pluralization
+- **Code Injection**: Strategic code insertion points
+
+#### 4. Module System
+- **Base Templates**: Core project structures
+- **Feature Modules**: Pluggable functionality (Auth, CRUD, etc.)
+- **Stack Templates**: Technology-specific implementations
+- **Custom Extensions**: User-defined template support
+
+### 📊 Generation Workflow
+```
+User Input → Template Selection → Context Building → Code Generation → File Creation → Project Ready
+```
+
+---
+
+## ⚡ Technology Stack
+
+### 🛠️ CLI Development Stack
+
+#### Command Line Interface
+```javascript
+// Primary CLI Libraries
+{
+  "commander": "^11.0.0",      // Command parsing and structure
+  "inquirer": "^9.2.0",       // Interactive prompts
+  "chalk": "^5.3.0",          // Colored terminal output
+  "ora": "^7.0.1"             // Loading spinners
+}
+```
+
+| Library | Purpose | Why Chosen |
+|---------|---------|------------|
+| **Commander.js** | Command parsing, subcommands, options | Industry standard, excellent documentation |
+| **Inquirer.js** | Interactive prompts and user input | Rich prompt types, validation support |
+| **Chalk** | Terminal output styling | Clean API, wide color support |
+| **Ora** | Loading indicators | Professional UX for long operations |
+
+#### File System Operations
+```javascript
+// File Management Libraries
+{
+  "fs-extra": "^11.1.1",      // Enhanced file operations
+  "path": "native",           // Path manipulation
+  "glob": "^10.3.0",          // File pattern matching
+  "make-dir": "^4.0.0"        // Directory creation
+}
+```
+
+#### Template Engine
+```javascript
+// Template Processing
+{
+  "ejs": "^3.1.9",            // Embedded JavaScript templates
+  "handlebars": "^4.7.8",     // Alternative template engine
+  "mustache": "^4.2.0"        // Logic-less templates
+}
+```
+
+**EJS Selected for**:
+- JavaScript syntax familiarity
+- Powerful conditional and loop support
+- Variable interpolation: `<%= variable %>`
+- Control flow: `<% if (condition) { %>`
+- Iteration: `<% entities.forEach(entity => { %>`
+
+#### String Manipulation
+```javascript
+// Naming Conventions
+{
+  "change-case": "^4.1.2",    // Case conversion utilities
+  "pluralize": "^8.0.0",      // Singular/plural conversion
+  "lodash": "^4.17.21"        // Utility functions
+}
+```
+
+### 🎯 Target Generation Stacks
+
+#### Phase 1: Node.js Backend
+- **Runtime**: Node.js 18+
+- **Framework**: Express.js
+- **Database**: MongoDB with Mongoose
+- **Authentication**: JWT
+- **Testing**: Jest
+- **Validation**: Joi
+
+#### Phase 2: Frontend Frameworks
+- **React**: using react library
+- **Vue.js**: Vue CLI / Vite
+- **Angular**: Angular CLI
+
+#### Phase 3: Alternative Backends
+- **Java**: Spring Boot
+- **Python**: FastAPI / Django
+- **C#**: ASP.NET Core
+
+### 🚀 Distribution Strategy
+```bash
+# Global Installation
+npm install -g @yourorg/skeleton-cli
+
+# Direct Execution
+npx @yourorg/skeleton-cli init my-project
+
+# Local Development
+git clone repo && npm link
+```
+
+---
+
+## 📁 Project Structure
+
+### 🏗️ CLI Generator Structure
+```
+skeleton-cli/
+├── 📁 bin/
+│   └── skeleton-cli.js              # Executable entry point
+├── 📁 src/
+│   ├── 📁 commands/                 # Command implementations
+│   │   ├── init.js                 # Project initialization
+│   │   ├── generate.js             # Entity/module generation
+│   │   ├── add.js                  # Add modules to existing project
+│   │   └── list.js                 # List available templates
+│   ├── 📁 core/                    # Core functionality
+│   │   ├── template-engine.js      # EJS template processing
+│   │   ├── file-manager.js         # File system operations
+│   │   ├── naming-utils.js         # Case conversion utilities
+│   │   └── validator.js            # Input validation
+│   ├── 📁 generators/              # Code generators
+│   │   ├── project-generator.js    # Complete project setup
+│   │   ├── entity-generator.js     # Model/Controller/Route generation
+│   │   └── module-generator.js     # Feature module integration
+│   └── index.js                    # Main CLI entry point
+├── 📁 templates/                   # Template repository
+│   ├── 📁 stacks/                  # Technology stack templates
+│   │   ├── 📁 node-express/        # Node.js + Express stack
+│   │   ├── 📁 java-spring/         # Java Spring Boot stack
+│   │   └── 📁 python-fastapi/      # Python FastAPI stack
+│   ├── 📁 modules/                 # Feature modules
+│   │   ├── 📁 auth-jwt/            # JWT Authentication
+│   │   ├── 📁 file-upload/         # File upload functionality
+│   │   ├── 📁 email-service/       # Email integration
+│   │   └── 📁 logging/             # Logging setup
+│   └── 📁 components/              # Reusable components
+│       ├── 📁 crud/                # CRUD operations
+│       ├── 📁 middleware/          # Express middleware
+│       └── 📁 utils/               # Utility functions
+├── 📁 test/                        # Test suite
+│   ├── 📁 unit/                    # Unit tests
+│   ├── 📁 integration/             # Integration tests
+│   └── 📁 fixtures/                # Test data
+├── 📁 docs/                        # Documentation
+│   ├── api.md                      # API documentation
+│   ├── templates.md                # Template guide
+│   └── examples.md                 # Usage examples
+├── package.json                    # Package configuration
+├── README.md                       # Project overview
+└── .gitignore                      # Git ignore rules
+```
+
+### 🎯 Generated Project Structure (Node.js/Express)
+```
+my-generated-project/
+├── 📁 src/
+│   ├── 📁 models/                  # Data models
+│   │   ├── user.model.js
+│   │   └── product.model.js
+│   ├── 📁 controllers/             # Business logic
+│   │   ├── user.controller.js
+│   │   └── product.controller.js
+│   ├── 📁 routes/                  # API routes
+│   │   ├── user.routes.js
+│   │   └── product.routes.js
+│   ├── 📁 middleware/              # Custom middleware
+│   │   ├── auth.middleware.js
+│   │   └── validation.middleware.js
+│   ├── 📁 services/                # Business services
+│   │   ├── auth.service.js
+│   │   └── email.service.js
+│   └── 📁 utils/                   # Utility functions
+│       ├── database.js
+│       └── helpers.js
+├── 📁 config/                      # Configuration files
+│   ├── database.js                 # Database configuration
+│   ├── auth.js                     # Authentication config
+│   └── environment.js              # Environment variables
+├── 📁 tests/                       # Test files
+│   ├── 📁 unit/
+│   └── 📁 integration/
+├── 📁 docs/                        # API documentation
+├── app.js                          # Main application file
+├── server.js                       # Server startup
+├── package.json                    # Dependencies
+├── .env.example                    # Environment template
+├── .gitignore                      # Git ignore rules
+└── README.md                       # Project documentation
+```
+
+### 📋 Template File Organization
+```
+templates/stacks/node-express/
+├── base/                           # Core project files
+│   ├── app.js.ejs                 # Express app setup
+│   ├── server.js.ejs              # Server configuration
+│   ├── package.json.ejs           # Package dependencies
+│   └── .env.example.ejs           # Environment variables
+├── models/                         # Data model templates
+│   └── model.js.ejs               # Generic model template
+├── controllers/                    # Controller templates
+│   └── controller.js.ejs          # Generic controller template
+├── routes/                         # Route templates
+│   └── routes.js.ejs              # Generic routes template
+└── config/                         # Configuration templates
+    ├── database.js.ejs            # Database connection
+    └── middleware.js.ejs          # Middleware setup
+```
+
+---
+
+## 🎨 Template System
+
+### 📝 Template Engine Configuration
+
+#### EJS Template Syntax Reference
+```javascript
+// Variable Interpolation
+<%= variable %>                    // Escaped output
+<%- variable %>                    // Unescaped output (HTML)
+<% /* JavaScript code */ %>        // Execution without output
+
+// Conditionals
+<% if (condition) { %>
+  Content when true
+<% } else { %>
+  Content when false
+<% } %>
+
+// Loops
+<% entities.forEach(entity => { %>
+  Processing entity: <%= entity.name %>
+<% }); %>
+
+// Include partials
+<%- include('partials/header', {title: 'Page Title'}) %>
+```
+
+#### Template Context Variables
+```javascript
+// Standard context object passed to all templates
+const templateContext = {
+  project: {
+    name: 'my-project',
+    namePascalCase: 'MyProject',
+    nameCamelCase: 'myProject',
+    nameKebabCase: 'my-project',
+    nameSnakeCase: 'my_project',
+    description: 'Project description',
+    author: 'Developer Name',
+    version: '1.0.0',
+    modules: ['auth-jwt', 'file-upload']
+  },
+  entities: [
+    {
+      name: 'user',
+      namePascalCase: 'User',
+      nameCamelCase: 'user',
+      namePlural: 'users',
+      namePluralPascalCase: 'Users',
+      namePluralCamelCase: 'users',
+      fields: [
+        { name: 'name', type: 'string', required: true },
+        { name: 'email', type: 'string', required: true, unique: true },
+        { name: 'age', type: 'number', required: false }
+      ]
+    }
+  ],
+  database: {
+    type: 'mongodb',
+    uri: 'mongodb://localhost:27017/myproject'
+  },
+  stack: {
+    backend: 'node-express',
+    frontend: 'react',
+    database: 'mongodb'
+  }
+};
+```
+
+### 🧩 Template Categories
+
+#### 1. Base Templates
+Core project structure templates that every project needs:
+
+```
+templates/stacks/node-express/base/
+├── app.js.ejs                     # Express application setup
+├── server.js.ejs                  # Server startup and configuration
+├── package.json.ejs               # NPM package configuration
+├── .env.example.ejs               # Environment variables template
+├── .gitignore.ejs                 # Git ignore configuration
+└── README.md.ejs                  # Project documentation
+```
+
+#### 2. Entity Templates
+Dynamic templates for data models and their operations:
+
+```
+templates/components/crud/
+├── model.js.ejs                   # Mongoose model template
+├── controller.js.ejs              # Express controller template
+├── routes.js.ejs                  # Express routes template
+├── service.js.ejs                 # Business logic service
+└── validation.js.ejs              # Input validation schema
+```
+
+#### 3. Module Templates
+Feature-specific templates for common functionalities:
+
+```
+templates/modules/
+├── auth-jwt/                      # JWT Authentication
+│   ├── auth.controller.js.ejs
+│   ├── auth.routes.js.ejs
+│   ├── auth.middleware.js.ejs
+│   └── user.model.js.ejs
+├── file-upload/                   # File Upload
+│   ├── upload.controller.js.ejs
+│   ├── upload.routes.js.ejs
+│   └── upload.middleware.js.ejs
+└── email-service/                 # Email Integration
+    ├── email.service.js.ejs
+    ├── email.controller.js.ejs
+    └── email.templates/
+```
+
+### 🔧 Template Processing Workflow
+
+#### 1. Template Selection
+```javascript
+// Template resolution logic
+function resolveTemplate(templatePath, context) {
+  const templateFile = path.join(TEMPLATES_DIR, templatePath);
+  const templateContent = fs.readFileSync(templateFile, 'utf8');
+  return ejs.render(templateContent, context);
+}
+```
+
+#### 2. Context Building
+```javascript
+// Build comprehensive context for template rendering
+function buildTemplateContext(userInput) {
+  return {
+    project: processProjectData(userInput.project),
+    entities: userInput.entities.map(processEntityData),
+    modules: userInput.modules,
+    stack: userInput.stack,
+    timestamp: new Date().toISOString(),
+    generator: {
+      name: 'skeleton-cli',
+      version: packageJson.version
+    }
+  };
+}
+```
+
+#### 3. File Generation
+```javascript
+// Generate file from template
+async function generateFile(templatePath, outputPath, context) {
+  const content = await renderTemplate(templatePath, context);
+  await ensureDir(path.dirname(outputPath));
+  await fs.writeFile(outputPath, content, 'utf8');
+}
+```
+
+---
+
+## 🔨 Implementation Details
+
+### 📄 Core Template Examples
+
+#### 1. Dynamic Model Template
+**File**: `templates/components/crud/model.js.ejs`
+```javascript
+// Generated by Skeleton CLI v<%= generator.version %>
+// Entity: <%= entity.namePascalCase %>
+// Created: <%= timestamp %>
+
+const mongoose = require('mongoose');
+<% if (entity.hasValidation) { %>
+const Joi = require('joi');
+<% } %>
+
+// <%= entity.namePascalCase %> Schema Definition
+const <%= entity.namePascalCase %>Schema = new mongoose.Schema({
+<% entity.fields.forEach((field, index) => { %>
+  <%= field.name %>: {
+    type: <%= field.mongooseType %>,
+<% if (field.required) { %>    required: [true, '<%= field.name %> is required'],<% } %>
+<% if (field.unique) { %>    unique: true,<% } %>
+<% if (field.default !== undefined) { %>    default: <%= JSON.stringify(field.default) %>,<% } %>
+<% if (field.minLength) { %>    minlength: [<%= field.minLength %>, '<%= field.name %> must be at least <%= field.minLength %> characters'],<% } %>
+<% if (field.maxLength) { %>    maxlength: [<%= field.maxLength %>, '<%= field.name %> cannot exceed <%= field.maxLength %> characters'],<% } %>
+<% if (field.enum) { %>    enum: {
+      values: [<%= field.enum.map(val => `'${val}'`).join(', ') %>],
+      message: '{VALUE} is not a valid <%= field.name %>'
+    },<% } %>
+<% if (field.validate) { %>    validate: {
+      validator: <%= field.validate %>,
+      message: '<%= field.validateMessage || `Invalid ${field.name}` %>'
+    }<% } %>
+  }<%= index < entity.fields.length - 1 ? ',' : '' %>
+<% }); %>
+}, {
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true }
+});
+
+<% if (entity.indexes && entity.indexes.length > 0) { %>
+// Indexes
+<% entity.indexes.forEach(index => { %>
+<%= entity.namePascalCase %>Schema.index(<%= JSON.stringify(index.fields) %><%= index.options ? `, ${JSON.stringify(index.options)}` : '' %>);
+<% }); %>
+<% } %>
+
+<% if (entity.virtuals && entity.virtuals.length > 0) { %>
+// Virtual fields
+<% entity.virtuals.forEach(virtual => { %>
+<%= entity.namePascalCase %>Schema.virtual('<%= virtual.name %>').get(function() {
+  <%= virtual.get %>
+});
+<% }); %>
+<% } %>
+
+<% if (entity.methods && entity.methods.length > 0) { %>
+// Instance methods
+<% entity.methods.forEach(method => { %>
+<%= entity.namePascalCase %>Schema.methods.<%= method.name %> = function(<%= method.params || '' %>) {
+  <%= method.body %>
+};
+<% }); %>
+<% } %>
+
+<% if (entity.statics && entity.statics.length > 0) { %>
+// Static methods
+<% entity.statics.forEach(static => { %>
+<%= entity.namePascalCase %>Schema.statics.<%= static.name %> = function(<%= static.params || '' %>) {
+  <%= static.body %>
+};
+<% }); %>
+<% } %>
+
+// Pre-save middleware
+<%= entity.namePascalCase %>Schema.pre('save', function(next) {
+  // Add custom pre-save logic here
+  next();
+});
+
+<% if (entity.hasValidation) { %>
+// Validation schema
+const <%= entity.nameCamelCase %>ValidationSchema = Joi.object({
+<% entity.fields.filter(field => !field.auto).forEach((field, index, arr) => { %>
+  <%= field.name %>: <%= field.joiValidation %><%= index < arr.length - 1 ? ',' : '' %>
+<% }); %>
+});
+
+// Validation method
+<%= entity.namePascalCase %>Schema.statics.validateInput = function(data) {
+  return <%= entity.nameCamelCase %>ValidationSchema.validate(data);
+};
+<% } %>
+
+module.exports = mongoose.model('<%= entity.namePascalCase %>', <%= entity.namePascalCase %>Schema);
+```
+
+#### 2. Advanced Controller Template
+**File**: `templates/components/crud/controller.js.ejs`
+```javascript
+// Generated by Skeleton CLI v<%= generator.version %>
+// Controller: <%= entity.namePascalCase %>
+// Created: <%= timestamp %>
+
+const <%= entity.namePascalCase %> = require('../models/<%= entity.name %>.model');
+<% if (project.modules.includes('logging')) { %>
+const logger = require('../utils/logger');
+<% } %>
+<% if (entity.hasValidation) { %>
+const { validationResult } = require('express-validator');
+<% } %>
+
+/**
+ * @desc    Create new <%= entity.name %>
+ * @route   POST /api/<%= entity.namePlural %>
+ * @access  <%= entity.access || 'Public' %>
+ */
+exports.create<%= entity.namePascalCase %> = async (req, res) => {
+  try {
+<% if (entity.hasValidation) { %>
+    // Check for validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: errors.array()
+      });
+    }
+<% } %>
+
+    // Extract data from request body
+    const <%= entity.nameCamelCase %>Data = {
+<% entity.fields.filter(field => !field.auto && !field.system).forEach((field, index, arr) => { %>
+      <%= field.name %>: req.body.<%= field.name %><%= index < arr.length - 1 ? ',' : '' %>
+<% }); %>
+    };
+
+<% if (entity.hasOwnership) { %>
+    // Add user ownership if authenticated
+    if (req.user) {
+      <%= entity.nameCamelCase %>Data.user = req.user.id;
+    }
+<% } %>
+
+    // Create new <%= entity.name %>
+    const <%= entity.nameCamelCase %> = await <%= entity.namePascalCase %>.create(<%= entity.nameCamelCase %>Data);
+
+<% if (project.modules.includes('logging')) { %>
+    logger.info(`New <%= entity.name %> created: ${<%= entity.nameCamelCase %>._id}`);
+<% } %>
+
+    res.status(201).json({
+      success: true,
+      message: '<%= entity.namePascalCase %> created successfully',
+      data: <%= entity.nameCamelCase %>
+    });
+
+  } catch (error) {
+<% if (project.modules.includes('logging')) { %>
+    logger.error(`Error creating <%= entity.name %>: ${error.message}`);
+<% } %>
+    
+    // Handle duplicate key error
+    if (error.code === 11000) {
+      const field = Object.keys(error.keyValue)[0];
+      return res.status(400).json({
+        success: false,
+        message: `<%= entity.namePascalCase %> with this ${field} already exists`
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: 'Server error while creating <%= entity.name %>',
+      error: process.env.NODE_ENV === 'development' ? error.message : {}
+    });
+  }
+};
+
+/**
+ * @desc    Get all <%= entity.namePlural %>
+ * @route   GET /api/<%= entity.namePlural %>
+ * @access  <%= entity.access || 'Public' %>
+ */
+exports.get<%= entity.namePluralPascalCase %> = async (req, res) => {
+  try {
+    // Parse query parameters
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 10;
+    const startIndex = (page - 1) * limit;
+    
+    // Build filter object
+    let filter = {};
+<% if (entity.hasOwnership) { %>
+    if (req.user && req.user.role !== 'admin') {
+      filter.user = req.user.id;
+    }
+<% } %>
+    
+    // Add search functionality
+    if (req.query.search) {
+      filter.$or = [
+<% entity.fields.filter(field => field.searchable).forEach((field, index, arr) => { %>
+        { <%= field.name %>: { $regex: req.query.search, $options: 'i' } }<%= index < arr.length - 1 ? ',' : '' %>
+<% }); %>
+      ];
+    }
+
+    // Sort options
+    const sort = req.query.sort || '-createdAt';
+
+    // Execute query
+    const <%= entity.namePluralCamelCase %> = await <%= entity.namePascalCase %>.find(filter)
+      .sort(sort)
+      .limit(limit)
+      .skip(startIndex)
+<% if (entity.populate && entity.populate.length > 0) { %>
+      .populate([
+<% entity.populate.forEach((pop, index, arr) => { %>
+        { path: '<%= pop.path %>', select: '<%= pop.select || '' %>' }<%= index < arr.length - 1 ? ',' : '' %>
+<% }); %>
+      ])
+<% } %>
+      .lean();
+
+    // Get total count for pagination
+    const total = await <%= entity.namePascalCase %>.countDocuments(filter);
+
+    // Pagination info
+    const pagination = {
+      page,
+      limit,
+      total,
+      pages: Math.ceil(total / limit),
+      hasNext: page < Math.ceil(total / limit),
+      hasPrev: page > 1
+    };
+
+    res.status(200).json({
+      success: true,
+      count: <%= entity.namePluralCamelCase %>.length,
+      pagination,
+      data: <%= entity.namePluralCamelCase %>
+    });
+
+  } catch (error) {
+<% if (project.modules.includes('logging')) { %>
+    logger.error(`Error fetching <%= entity.namePlural %>: ${error.message}`);
+<% } %>
+    res.status(500).json({
+      success: false,
+      message: 'Server error while fetching <%= entity.namePlural %>',
+      error: process.env.NODE_ENV === 'development' ? error.message : {}
+    });
+  }
+};
+
+/**
+ * @desc    Get single <%= entity.name %>
+ * @route   GET /api/<%= entity.namePlural %>/:id
+ * @access  <%= entity.access || 'Public' %>
+ */
+exports.get<%= entity.namePascalCase %> = async (req, res) => {
+  try {
+    let filter = { _id: req.params.id };
+    
+<% if (entity.hasOwnership) { %>
+    // Add ownership filter for non-admin users
+    if (req.user && req.user.role !== 'admin') {
+      filter.user = req.user.id;
+    }
+<% } %>
+
+    const <%= entity.nameCamelCase %> = await <%= entity.namePascalCase %>.findOne(filter)
+<% if (entity.populate && entity.populate.length > 0) { %>
+      .populate([
+<% entity.populate.forEach((pop, index, arr) => { %>
+        { path: '<%= pop.path %>', select: '<%= pop.select || '' %>' }<%= index < arr.length - 1 ? ',' : '' %>
+<% }); %>
+      ])
+<% } %>;
+
+    if (!<%= entity.nameCamelCase %>) {
+      return res.status(404).json({
+        success: false,
+        message: '<%= entity.namePascalCase %> not found'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: <%= entity.nameCamelCase %>
+    });
+
+  } catch (error) {
+<% if (project.modules.includes('logging')) { %>
+    logger.error(`Error fetching <%= entity.name %>: ${error.message}`);
+<% } %>
+    
+    // Handle invalid ObjectId
+    if (error.name === 'CastError') {
+      return res.status(404).json({
+        success: false,
+        message: '<%= entity.namePascalCase %> not found'
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: 'Server error while fetching <%= entity.name %>',
+      error: process.env.NODE_ENV === 'development' ? error.message : {}
+    });
+  }
+};
+
+/**
+ * @desc    Update <%= entity.name %>
+ * @route   PUT /api/<%= entity.namePlural %>/:id
+ * @access  <%= entity.access || 'Public' %>
+ */
+exports.update<%= entity.namePascalCase %> = async (req, res) => {
+  try {
+<% if (entity.hasValidation) { %>
+    // Check for validation errors
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
+        success: false,
+        message: 'Validation failed',
+        errors: errors.array()
+      });
+    }
+<% } %>
+
+    let filter = { _id: req.params.id };
+    
+<% if (entity.hasOwnership) { %>
+    // Add ownership filter for non-admin users
+    if (req.user && req.user.role !== 'admin') {
+      filter.user = req.user.id;
+    }
+<% } %>
+
+    // Update data (excluding system fields)
+    const updateData = {};
+<% entity.fields.filter(field => !field.auto && !field.system && field.updatable !== false).forEach(field => { %>
+    if (req.body.<%= field.name %> !== undefined) {
+      updateData.<%= field.name %> = req.body.<%= field.name %>;
+    }
+<% }); %>
+
+    const <%= entity.nameCamelCase %> = await <%= entity.namePascalCase %>.findOneAndUpdate(
+      filter,
+      updateData,
+      {
+        new: true,
+        runValidators: true
+      }
+    );
+
+    if (!<%= entity.nameCamelCase %>) {
+      return res.status(404).json({
+        success: false,
+        message: '<%= entity.namePascalCase %> not found'
+      });
+    }
+
+<% if (project.modules.includes('logging')) { %>
+    logger.info(`<%= entity.namePascalCase %> updated: ${<%= entity.nameCamelCase %>._id}`);
+<% } %>
+
+    res.status(200).json({
+      success: true,
+      message: '<%= entity.namePascalCase %> updated successfully',
+      data: <%= entity.nameCamelCase %>
+    });
+
+  } catch (error) {
+<% if (project.modules.includes('logging')) { %>
+    logger.error(`Error updating <%= entity.name %>: ${error.message}`);
+<% } %>
+    
+    // Handle duplicate key error
+    if (error.code === 11000) {
+      const field = Object.keys(error.keyValue)[0];
+      return res.status(400).json({
+        success: false,
+        message: `<%= entity.namePascalCase %> with this ${field} already exists`
+      });
+    }
+
+    // Handle invalid ObjectId
+    if (error.name === 'CastError') {
+      return res.status(404).json({
+        success: false,
+        message: '<%= entity.namePascalCase %> not found'
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: 'Server error while updating <%= entity.name %>',
+      error: process.env.NODE_ENV === 'development' ? error.message : {}
+    });
+  }
+};
+
+/**
+ * @desc    Delete <%= entity.name %>
+ * @route   DELETE /api/<%= entity.namePlural %>/:id
+ * @access  <%= entity.access || 'Public' %>
+ */
+exports.delete<%= entity.namePascalCase %> = async (req, res) => {
+  try {
+    let filter = { _id: req.params.id };
+    
+<% if (entity.hasOwnership) { %>
+    // Add ownership filter for non-admin users
+    if (req.user && req.user.role !== 'admin') {
+      filter.user = req.user.id;
+    }
+<% } %>
+
+    const <%= entity.nameCamelCase %> = await <%= entity.namePascalCase %>.findOneAndDelete(filter);
+
+    if (!<%= entity.nameCamelCase %>) {
+      return res.status(404).json({
+        success: false,
+        message: '<%= entity.namePascalCase %> not found'
+      });
+    }
+
+<% if (project.modules.includes('logging')) { %>
+    logger.info(`<%= entity.namePascalCase %> deleted: ${<%= entity.nameCamelCase %>._id}`);
+<% } %>
+
+    res.status(200).json({
+      success: true,
+      message: '<%= entity.namePascalCase %> deleted successfully',
+      data: {}
+    });
+
+  } catch (error) {
+<% if (project.modules.includes('logging')) { %>
+    logger.error(`Error deleting <%= entity.name %>: ${error.message}`);
+<% } %>
+    
+    // Handle invalid ObjectId
+    if (error.name === 'CastError') {
+      return res.status(404).json({
+        success: false,
+        message: '<%= entity.namePascalCase %> not found'
+      });
+    }
+
+    res.status(500).json({
+      success: false,
+      message: 'Server error while deleting <%= entity.name %>',
+      error: process.env.NODE_ENV === 'development' ? error.message : {}
+    });
+  }
+};
+```
+
+---
+
+## 🔄 Development Workflow
+
+### 📋 CLI Command Structure
+
+#### Primary Commands
+```bash
+# Initialize new project
+skeleton-cli init [project-name] [options]
+
+# Generate entity (model/controller/routes)
+skeleton-cli generate entity <name> [fields]
+
+# Add feature module
+skeleton-cli add module <module-name>
+
+# List available templates
+skeleton-cli list [templates|modules|stacks]
+
+# Show project information
+skeleton-cli info
+```
+
+#### Detailed Command Examples
+```bash
+# 1. Full project initialization
+skeleton-cli init my-ecommerce \
+  --stack node-express \
+  --database mongodb \
+  --modules auth-jwt,file-upload,email-service \
+  --git-init \
+  --install-deps
+
+# 2. Generate complex entity
+skeleton-cli generate entity Product \
+  name:string:required \
+  description:text \
+  price:number:required:min=0 \
+  category:string:enum=electronics,clothing,books \
+  images:array \
+  isActive:boolean:default=true \
+  createdBy:objectid:ref=User
+
+# 3. Add authentication module
+skeleton-cli add module auth-jwt \
+  --user-model User \
+  --jwt-secret auto-generate \
+  --routes /auth
+
+# 4. Generate API documentation
+skeleton-cli generate docs \
+  --format swagger \
+  --output ./docs/api.json
+```
+
+### 🛠️ Development Process
+
+#### Phase 1: Project Planning
+1. **Requirement Analysis**
+   - Define entities and relationships
+   - Choose technology stack
+   - Select required modules
+   - Plan API structure
+
+2. **CLI Interaction**
+   ```bash
+   skeleton-cli init
+   ? Project name: my-project
+   ? Backend framework: Node.js + Express
+   ? Database: MongoDB
+   ? Include authentication? Yes
+   ? Include file upload? Yes
+   ? Initialize git repository? Yes
+   ```
+
+3. **Context Building**
+   - Parse user input
+   - Validate requirements
+   - Build template context
+   - Resolve dependencies
+
+#### Phase 2: Code Generation
+1. **Template Selection**
+   - Base project structure
+   - Entity-specific templates
+   - Module templates
+   - Configuration files
+
+2. **File Generation**
+   - Process templates with context
+   - Create directory structure
+   - Generate source files
+   - Set up configuration
+
+3. **Post-Generation Tasks**
+   - Install dependencies
+   - Initialize git repository
+   - Run initial tests
+   - Generate documentation
+
+#### Phase 3: Quality Assurance
+1. **Code Validation**
+   - Syntax checking
+   - Dependency resolution
+   - Configuration validation
+   - Security audit
+
+2. **Testing Setup**
+   - Generate test files
+   - Configure testing framework
+   - Run initial test suite
+   - Setup CI/CD pipeline
+
+### 🚀 Generated Project Workflow
+
+#### After Generation
+```bash
+cd my-generated-project
+
+# Install dependencies (if not auto-installed)
+npm install
+
+# Set up environment variables
+cp .env.example .env
+# Edit .env with your configuration
+
+# Start development server
+npm run dev
+
+# Run tests
+npm test
+
+# Build for production
+npm run build
+```
+
+#### Development Commands
+```bash
+# Generated package.json scripts
+{
+  "scripts": {
+    "dev": "nodemon app.js",
+    "start": "node app.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "build": "echo 'Build step if needed'",
+    "docs": "jsdoc -c jsdoc.conf.json"
+  }
+}
+```
+
+---
+
+## 💡 Usage Examples
+
+### 🎯 Real-World Scenarios
+
+#### Scenario 1: E-commerce API
+```bash
+# Initialize e-commerce project
+skeleton-cli init ecommerce-api --stack node-express --database mongodb
+
+# Generate core entities
+skeleton-cli generate entity User \
+  name:string:required \
+  email:string:required:unique \
+  password:string:required:minLength=8 \
+  role:string:enum=customer,admin:default=customer \
+  isActive:boolean:default=true
+
+skeleton-cli generate entity Product \
+  name:string:required \
+  description:text \
+  price:number:required:min=0 \
+  images:array \
+  category:objectid:ref=Category \
+  stock:number:default=0 \
+  isActive:boolean:default=true
+
+skeleton-cli generate entity Order \
+  user:objectid:ref=User:required \
+  products:array \
+  total:number:required \
+  status:string:enum=pending,processing,shipped,delivered:default=pending
+
+# Add modules
+skeleton-cli add module auth-jwt
+skeleton-cli add module file-upload
+skeleton-cli add module email-service
+```
+
+#### Scenario 2: Blog Platform
+```bash
+# Initialize blog project
+skeleton-cli init my-blog --stack node-express --database postgresql
+
+# Generate entities
+skeleton-cli generate entity Author \
+  name:string:required \
+  email:string:required:unique \
+  bio:text \
+  avatar:string
+
+skeleton-cli generate entity Post \
+  title:string:required \
+  content:text:required \
+  excerpt:string \
+  author:objectid:ref=Author:required \
+  tags:array \
+  publishedAt:date \
+  isPublished:boolean:default=false
+
+skeleton-cli generate entity Comment \
+  content:string:required \
+  author:string:required \
+  post:objectid:ref=Post:required \
+  isApproved:boolean:default=false
+
+# Add modules
+skeleton-cli add module auth-jwt
+skeleton-cli add module rich-text-editor
+```
+
+#### Scenario 3: Task Management
+```bash
+# Initialize task manager
+skeleton-cli init task-manager --stack node-express --database mongodb
+
+# Generate entities
+skeleton-cli generate entity Project \
+  name:string:required \
+  description:text \
+  owner:objectid:ref=User:required \
+  members:array \
+  deadline:date \
+  status:string:enum=planning,active,completed:default=planning
+
+skeleton-cli generate entity Task \
+  title:string:required \
+  description:text \
+  project:objectid:ref=Project:required \
+  assignedTo:objectid:ref=User \
+  priority:string:enum=low,medium,high:default=medium \
+  status:string:enum=todo,inprogress,done:default=todo \
+  dueDate:date
+
+# Add modules
+skeleton-cli add module auth-jwt
+skeleton-cli add module real-time-notifications
+skeleton-cli add module file-upload
+```
+
+### 📊 Generated API Examples
+
+#### User Management API (Generated)
+```javascript
+// GET /api/users - List all users with pagination
+{
+  "success": true,
+  "count": 25,
+  "pagination": {
+    "page": 1,
+    "limit": 10,
+    "total": 25,
+    "pages": 3,
+    "hasNext": true,
+    "hasPrev": false
+  },
+  "data": [...]
+}
+
+// POST /api/users - Create new user
+{
+  "success": true,
+  "message": "User created successfully",
+  "data": {
+    "_id": "64f7a8b4c2e1a5d6b7c8d9e0",
+    "name": "John Doe",
+    "email": "john@example.com",
+    "role": "customer",
+    "isActive": true,
+    "createdAt": "2024-09-06T10:30:00.000Z",
+    "updatedAt": "2024-09-06T10:30:00.000Z"
+  }
+}
+
+// GET /api/users/:id - Get single user
+{
+  "success": true,
+  "data": {
+    "_id": "64f7a8b4c2e1a5d6b7c8d9e0",
+    "name": "John Doe",
+    "email": "john@example.com",
+    "role": "customer",
+    "isActive": true,
+    "createdAt": "2024-09-06T10:30:00.000Z",
+    "updatedAt": "2024-09-06T10:30:00.000Z"
+  }
+}
+```
+
+#### Advanced Features (Generated)
+```javascript
+// Search and filtering
+GET /api/products?search=laptop&category=electronics&minPrice=500&page=2
+
+// Sorting
+GET /api/posts?sort=-publishedAt,title
+
+// Population
+GET /api/orders?populate=user,products.product
+
+// Field selection
+GET /api/users?select=name,email,role
+```
+
+---
+
+## 🚀 Deployment Strategy
+
+### 📦 Package Distribution
+
+#### NPM Package Configuration
+```json
+{
+  "name": "@yourorg/skeleton-cli",
+  "version": "1.0.0",
+  "description": "A powerful CLI tool for generating scaffolded applications",
+  "main": "src/index.js",
+  "bin": {
+    "skeleton-cli": "./bin/skeleton-cli.js",
+    "skeleton": "./bin/skeleton-cli.js"
+  },
+  "files": [
+    "bin/",
+    "src/",
+    "templates/",
+    "README.md"
+  ],
+  "keywords": [
+    "cli",
+    "scaffold",
+    "generator",
+    "boilerplate",
+    "express",
+    "nodejs",
+    "api"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourorg/skeleton-cli.git"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
+```
+
+#### Installation Methods
+```bash
+# Global installation (recommended)
+npm install -g @yourorg/skeleton-cli
+
+# Project-specific installation
+npm install --save-dev @yourorg/skeleton-cli
+
+# Direct execution without installation
+npx @yourorg/skeleton-cli init my-project
+
+# Yarn alternative
+yarn global add @yourorg/skeleton-cli
+```
+
+### 🔧 CLI Binary Setup
+```javascript
+#!/usr/bin/env node
+// bin/skeleton-cli.js
+
+const { program } = require('commander');
+const chalk = require('chalk');
+const figlet = require('figlet');
+const packageJson = require('../package.json');
+
+// Display banner
+console.log(
+  chalk.cyan(
+    figlet.textSync('Skeleton CLI', { horizontalLayout: 'full' })
+  )
+);
+console.log(chalk.yellow(`v${packageJson.version}\n`));
+
+// Import commands
+const initCommand = require('../src/commands/init');
+const generateCommand = require('../src/commands/generate');
+const addCommand = require('../src/commands/add');
+const listCommand = require('../src/commands/list');
+
+// Configure CLI
+program
+  .name('skeleton-cli')
+  .description('Generate scaffolded applications quickly')
+  .version(packageJson.version);
+
+// Register commands
+initCommand(program);
+generateCommand(program);
+addCommand(program);
+listCommand(program);
+
+// Parse arguments
+program.parse();
+```
+
+### 🌐 Continuous Integration
+
+#### GitHub Actions Workflow
+```yaml
+# .github/workflows/ci.yml
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  release:
+    types: [ created ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.x, 18.x, 20.x]
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    - run: npm ci
+    - run: npm run lint
+    - run: npm test
+    - run: npm run test:integration
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+        registry-url: 'https://registry.npmjs.org'
+    
+    - run: npm ci
+    - run: npm run build
+    - run: npm publish --access public
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+```
+
+### 📋 Quality Assurance
+
+#### Testing Strategy
+```javascript
+// test/integration/cli.test.js
+const { execSync } = require('child_process');
+const fs = require('fs-extra');
+const path = require('path');
+
+describe('CLI Integration Tests', () => {
+  const testDir = path.join(__dirname, '../tmp');
+  
+  beforeEach(async () => {
+    await fs.ensureDir(testDir);
+    process.chdir(testDir);
+  });
+  
+  afterEach(async () => {
+    await fs.remove(testDir);
+  });
+  
+  test('should initialize new project', () => {
+    const output = execSync('skeleton-cli init test-project --stack node-express --no-git', {
+      encoding: 'utf8'
+    });
+    
+    expect(output).toContain('Project created successfully');
+    expect(fs.existsSync('test-project/package.json')).toBe(true);
+    expect(fs.existsSync('test-project/src/app.js')).toBe(true);
+  });
+  
+  test('should generate entity', () => {
+    execSync('skeleton-cli init test-project --stack node-express --no-git');
+    process.chdir('test-project');
+    
+    const output = execSync('skeleton-cli generate entity User name:string email:string', {
+      encoding: 'utf8'
+    });
+    
+    expect(output).toContain('Entity User generated successfully');
+## 🗺️ Future Roadmap
+
+### 📈 Development Phases
+
+#### Phase 1: Core Foundation (MVP) ✅
+- [x] Basic CLI structure with Commander.js
+- [x] Template engine with EJS
+- [x] Node.js/Express stack support
+- [x] MongoDB integration
+- [x] Basic CRUD generation
+- [x] Entity generation from command line
+- [x] File system operations
+- [x] Basic validation and error handling
+
+#### Phase 2: Enhanced Features (Q1 2025)
+- [ ] **Advanced Entity Features**
+  - [ ] Entity relationships (one-to-many, many-to-many)
+  - [ ] Advanced field types (geo-location, rich text)
+  - [ ] Custom validation rules
+  - [ ] Entity inheritance
+
+- [ ] **Authentication & Security**
+  - [ ] JWT authentication module
+  - [ ] Role-based access control (RBAC)
+  - [ ] OAuth integration (Google, GitHub)
+  - [ ] API rate limiting
+
+- [ ] **Additional Modules**
+  - [ ] File upload with cloud storage
+  - [ ] Email service integration
+  - [ ] Real-time notifications (WebSocket)
+  - [ ] Logging and monitoring
+
+#### Phase 3: Frontend Integration (Q2 2025)
+- [ ] **React Integration**
+  - [ ] React components generation
+  - [ ] Redux/Zustand state management
+  - [ ] Form generation with validation
+  - [ ] API client generation
+
+- [ ] **Vue.js Support**
+  - [ ] Vue 3 composition API
+  - [ ] Pinia state management
+  - [ ] Component library integration
+
+- [ ] **Next.js Full-Stack**
+  - [ ] App router structure
+  - [ ] Server components
+  - [ ] API routes generation
+
+#### Phase 4: Multi-Stack Support (Q3 2025)
+- [ ] **Backend Alternatives**
+  - [ ] Java Spring Boot
+  - [ ] Python FastAPI
+  - [ ] C# ASP.NET Core
+  - [ ] Go Gin framework
+
+- [ ] **Database Support**
+  - [ ] PostgreSQL integration
+  - [ ] MySQL support
+  - [ ] SQLite for development
+  - [ ] Redis for caching
+
+#### Phase 5: Enterprise Features (Q4 2025)
+- [ ] **Advanced Tooling**
+  - [ ] Automatic API documentation (OpenAPI/Swagger)
+  - [ ] Test generation (unit & integration)
+  - [ ] Docker containerization
+  - [ ] Kubernetes deployment
+
+- [ ] **DevOps Integration**
+  - [ ] CI/CD pipeline generation
+  - [ ] Environment management
+  - [ ] Health checks and monitoring
+  - [ ] Performance optimization
+
+### 🎯 Long-term Vision
+
+#### Developer Experience
+- **Zero Configuration**: Projects work out of the box
+- **Intelligent Defaults**: Best practices built-in
+- **Extensibility**: Easy to add custom templates
+- **Documentation**: Auto-generated, always up-to-date
+
+#### Enterprise Ready
+- **Scalability**: Templates designed for growth
+- **Security**: Built-in security best practices
+- **Monitoring**: Observability from day one
+- **Compliance**: GDPR, SOC2 ready templates
+
+#### Community Driven
+- **Plugin System**: Community-contributed modules
+- **Template Marketplace**: Shared templates
+- **Custom Stacks**: Organization-specific templates
+- **Open Source**: MIT license, GitHub collaboration
+
+### 🔮 Innovation Areas
+
+#### AI-Powered Features
+- **Smart Entity Detection**: Analyze requirements and suggest entities
+- **Code Optimization**: AI-suggested improvements
+- **Business Logic Generation**: From natural language requirements
+- **Test Case Generation**: Automated test scenarios
+
+#### Cloud-Native Features
+- **Serverless Templates**: AWS Lambda, Vercel Functions
+- **Microservices Architecture**: Service mesh ready
+- **Event-Driven Architecture**: Message queues, event streaming
+- **GraphQL Federation**: Distributed schema management
+
+---
+
+## 📚 Appendices
+
+### 📖 Glossary
+- **CLI**: Command Line Interface
+- **Scaffold**: Generate basic project structure
+- **Template Engine**: System for processing template files
+- **Entity**: Data model representing business objects
+- **CRUD**: Create, Read, Update, Delete operations
+- **JWT**: JSON Web Token for authentication
+- **ORM**: Object-Relational Mapping
+- **API**: Application Programming Interface
+
+### 🔗 Resources
+- **Documentation**: [Link to full documentation]
+- **GitHub Repository**: [Link to source code]
+- **NPM Package**: [Link to NPM registry]
+- **Community Discord**: [Link to Discord server]
+- **Contribution Guide**: [Link to contributing guidelines]
+
+### 📝 Change Log
+- **v1.0.0**: Initial release with basic functionality
+- **v1.1.0**: Added module system and JWT auth
+- **v1.2.0**: Enhanced error handling and validation
+- **v2.0.0**: Frontend integration and React support
+
+---
+
+*This documentation is a living document and will be updated as the project evolves. For the latest information, please refer to the official repository and documentation.*
+
+Ass joao Marcelo.
