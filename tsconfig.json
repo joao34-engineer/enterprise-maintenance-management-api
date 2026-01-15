@@ -11,8 +11,7 @@
     "allowSyntheticDefaultImports": true,
     "declaration": true,
     "target": "es2020",
-    "skipLibCheck": true,
-    "types": ["node"]
+    "skipLibCheck": true
   },
   "ts-node": {
     "esm": true
