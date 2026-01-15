@@ -3,19 +3,28 @@ import { Request, Response } from 'express'
 import router from './router.js'
 import morgan from 'morgan'
 import cors from 'cors'
+import helmet from 'helmet'
+import rateLimit from 'express-rate-limit'
+import swaggerUi from 'swagger-ui-express'
+import swaggerSpec from './swagger.js'
 import { protect } from './modules/auth.js'
 import { createNewUser, signin } from './handlers/user.js'
-// Extend Express Request interface to include 'secret'
 
+// Rate limiting configuration
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	max: 100, // Limit each IP to 100 requests per windowMs
+	message: 'Too many requests from this IP, please try again later.',
+	standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+})
 
 const app = express();
 
-const customLogger = (message: string)  => (req: Request, res: Response, next: NextFunction) => {
-	console.log('hello from my main app', message)
-	next()
-}
+// Security middleware
+app.use(helmet())
+app.use(limiter)
 
-app.use(customLogger('middleware'))
 app.use(cors())
 app.use(morgan('dev'))
 app.use(express.json())
@@ -25,6 +34,8 @@ app.use(express.urlencoded({extended: true}))
 app.get('/', (req, res, next) => {
 	res.json({message: 'hello world'})
 })
+
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 app.use('/api', protect, router)
 

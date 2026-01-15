@@ -7,6 +7,7 @@ import request from "supertest";
  */
 
 describe("GridOps API Integration Tests", () => {
+  jest.setTimeout(30000); // Increase timeout to 30 seconds for database operations
 
   // Test user creation and authentication
   describe("POST /user", () => {
@@ -162,6 +163,7 @@ describe("GridOps API Integration Tests", () => {
         });
       
       expect(task2Res.status).toBe(200);
+      const task2Id = task2Res.body.data.id;
 
       // 11. List all tasks
       const tasksListRes = await request(app)
@@ -198,12 +200,19 @@ describe("GridOps API Integration Tests", () => {
       expect(updateStatusRes.status).toBe(200);
       expect(updateStatusRes.body.data.status).toBe("COMPLETED");
 
-      // 15. Delete task
-      const deleteTaskRes = await request(app)
+      // 15. Delete task 1
+      const deleteTask1Res = await request(app)
         .delete(`/api/task/${task1Id}`)
         .set("Authorization", `Bearer ${token}`);
       
-      expect(deleteTaskRes.status).toBe(200);
+      expect(deleteTask1Res.status).toBe(200);
+
+      // 15b. Delete task 2
+      const deleteTask2Res = await request(app)
+        .delete(`/api/task/${task2Id}`)
+        .set("Authorization", `Bearer ${token}`);
+      
+      expect(deleteTask2Res.status).toBe(200);
 
       // 16. Delete maintenance record
       const deleteRecordRes = await request(app)
