@@ -3,3 +3,13 @@ node_modules
 .env
 /src/generated/prisma
 dist
+
+# Documentation files
+GRIDOPS_TRANSFORMATION_GUIDE.md
+PHASE_*.md
+PROGRESS_SUMMARY.md
+API-v4.md
+proejct.md
+roadmap.md
+howToDo.txt
+api-design-nodejs-v4-dark.pdf
