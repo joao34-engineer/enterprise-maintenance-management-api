@@ -6,11 +6,13 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "strict": false,
-    "lib": ["esnext"],
+    "lib": ["esnext", "dom"],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "declaration": true,
-    "target": "es2020"
+    "target": "es2020",
+    "skipLibCheck": true,
+    "types": ["node"]
   },
   "ts-node": {
     "esm": true
